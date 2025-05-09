@@ -1,24 +1,21 @@
 from gpio import *
+from time import *
 
-MOTION_SENSOR_PIN = 0
-GARAGE_DOOR_PIN = 1
-LIGHT_PIN = 2
-
-def setup():
-    pinMode(MOTION_SENSOR_PIN, INPUT)
-    pinMode(GARAGE_DOOR_PIN, OUTPUT)
-    pinMode(LIGHT_PIN, OUTPUT)
-
-def loop():
-    motion = digitalRead(MOTION_SENSOR_PIN)
-    if motion == HIGH:
-        digitalWrite(GARAGE_DOOR_PIN, HIGH)
-        digitalWrite(LIGHT_PIN, HIGH)
+def sensorGerakan():
+    nilai = digitalRead(0)
+    if nilai == 0:
+        print("Tidak ada gerakan!")
+        customWrite(1, 0)
+        customWrite(2, 0)
     else:
-        digitalWrite(GARAGE_DOOR_PIN, LOW)
-        digitalWrite(LIGHT_PIN, LOW)
+        print("Ada gerakan!")
+        customWrite(1, 1)
+        customWrite(2, 1)
 
-setup()
+def main():
+    add_event_detect(0, sensorGerakan)
+    while True:
+        delay(100)
 
-while True:
-    loop()
+if __name__ == "__main__":
+    main()
